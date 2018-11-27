@@ -1,0 +1,31 @@
+{
+  "name": "mern-project",
+  "version": "1.0.0",
+  "description": "Practice project using React, NodeJS, Express and MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js"
+  },
+  "engines":{
+    "node":"10.13.0"
+  },
+  "author": "David Pinilla",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "moment-js": "^1.1.15",
+    "mongoose": "^5.3.13",
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-promise": "^0.6.0"
+  }
+}
