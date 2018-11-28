@@ -25,7 +25,7 @@ const bookSchema = mongoose.Schema(
       max: 5
     },
     price: {
-      type: Number,
+      type: String,
       default: "n/a"
     },
     OwnerID: {
