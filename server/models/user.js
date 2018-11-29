@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const config = require("../config/config").get(process.env.NODE_ENV);
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config').get(process.env.NODE_ENV);
 const SALT_I = 10;
 
 const userSchema = mongoose.Schema({
@@ -33,8 +33,8 @@ const userSchema = mongoose.Schema({
   }
 });
 
-userSchema.pre("save", function(next) {
-  if (this.isModified("password")) {
+userSchema.pre('save', function(next) {
+  if (this.isModified('password')) {
     bcrypt.genSalt(SALT_I, function(err, salt) {
       if (err) return next(err);
       bcrypt.hash(this.password, salt, function(err, hash) {
@@ -54,6 +54,13 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
     callback(null, isMatch);
   });
 };
-
-const User = mongoose.model("User", userSchema);
+userSchema.methods.generateToken = function(callback) {
+  var token = jwt.sign(this._id.toHexString(), config.SECRET);
+  this.token.token;
+  this.save(function(err, user) {
+    if (err) return callback(err);
+    callback(null, user);
+  });
+};
+const User = mongoose.model('User', userSchema);
 module.exports = { User };
