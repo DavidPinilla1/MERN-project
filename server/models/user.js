@@ -34,12 +34,13 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre('save', function(next) {
-  if (this.isModified('password')) {
-    bcrypt.genSalt(SALT_I, function(err, salt) {
+  const user = this;
+  if (user.isModified('password')) {
+    bcrypt.genSalt(SALT_I, (err, salt) => {
       if (err) return next(err);
-      bcrypt.hash(this.password, salt, function(err, hash) {
+      bcrypt.hash(user.password, salt, (err, hash) => {
         if (err) return next(err);
-        this.password = hash;
+        user.password = hash;
         next();
       });
     });
@@ -48,18 +49,36 @@ userSchema.pre('save', function(next) {
   }
 });
 
-userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) return callback(err);
-    callback(null, isMatch);
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+  const user = this;
+  bcrypt.compare(candidatePassword, user.password, function(err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
   });
 };
-userSchema.methods.generateToken = function(callback) {
-  var token = jwt.sign(this._id.toHexString(), config.SECRET);
-  this.token.token;
-  this.save(function(err, user) {
-    if (err) return callback(err);
-    callback(null, user);
+userSchema.methods.generateToken = function(cb) {
+  const user = this;
+  var token = jwt.sign(user._id.toHexString(), config.SECRET);
+  user.token = token;
+  user.save(function(err, user) {
+    if (err) return cb(err);
+    cb(null, user);
+  });
+};
+userSchema.statics.findByToken = function(token, cb) {
+  const user = this;
+  jwt.verify(token, config.SECRET, function(err, decode) {
+    user.findOne({ _id: decode, token: token }, function(err, user) {
+      if (err) return cb(err);
+      cb(null, user);
+    });
+  });
+};
+userSchema.methods.deleteToken = function(token, cb) {
+  const user = this;
+  user.update({ $unset: { token: 1 } }, (err, user) => {
+    if (err) return cb(err);
+    cb(null, user);
   });
 };
 const User = mongoose.model('User', userSchema);

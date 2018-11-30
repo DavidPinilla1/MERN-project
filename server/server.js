@@ -13,11 +13,11 @@ mongoose.connect(
 
 const { User } = require('./models/user');
 const { Book } = require('./models/book');
-
+const { auth } = require('./middleware/auth');
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// GET //
+// GET BOOKS//
 app.get('/api/getBook', (req, res) => {
   let id = req.query.id;
   Book.findById(id, (err, doc) => {
@@ -39,6 +39,45 @@ app.get('/api/books', (req, res) => {
       if (err) return res.status(400).send(err);
       res.send(doc);
     });
+});
+
+// GET USERS//
+app.get('/api/auth', auth, (req,res) => {
+  res.json({
+    isAuth: true,
+    id:req.user._id,
+    email:req.user.email,
+    name:req.user.name,
+    lastname:req.user.lastname
+  });
+});
+app.get('/api/logout', auth, (req, res) => {
+  req.user.deleteToken(req.token, (err, user) => {
+    if (err) res.status(400).send(err);
+    res.sendStatus(200);
+  });
+});
+app.get('/api/getReviewer', (req, res) => {
+  let id = req.query.id;
+  User.findById(id, (err, doc) => {
+    if (err) return res.status(400).send(err);
+    res.json({
+      name: doc.name,
+      lastname: doc.lastname
+    });
+  });
+});
+app.get('/api/users', (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) res.status(400).send(err);
+    res.status(200).send(users);
+  });
+});
+app.get('/api/user_posts', (req, res) => {
+  Book.find({ OwnerID: req.query.user }).exec((err, docs) => {
+    if (err) return res.status(400).send(err);
+    res.send(docs);
+  });
 });
 // POST BOOKS//
 app.post('/api/book', (req, res) => {
@@ -89,7 +128,6 @@ app.post('/api/login', (req, res) => {
     });
   });
 });
-
 // UPDATE //
 app.post('/api/book_update', (req, res) => {
   Book.findByIdAndUpdate(req.body._id, req.body, { new: true }, (err, doc) => {

@@ -4,7 +4,7 @@ const config = {
     DATABASE: process.env.MONGODB_URI
   },
   default: {
-    SUPER: "David123",
+    SECRET: "David123",
     DATABASE: "mongodb://localhost:27017/booksShelf"
   }
 };
