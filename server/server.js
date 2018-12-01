@@ -17,6 +17,15 @@ const { auth } = require('./middleware/auth');
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// ENABLE CORS ACCESS TO THE LOCALHOST:3000
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  next();
+});
+
+
+
+
 // GET BOOKS//
 app.get('/api/getBook', (req, res) => {
   let id = req.query.id;
