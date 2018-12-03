@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getBooks } from '../actions';
-import Axios from 'axios';
 
 import BookItem from '../widgetsUI/book_items'
 
 class home_container extends Component {
   componentWillMount() {
-    this.props.dispatch(getBooks(3, 0, 'desc'));
+    this.props.dispatch(getBooks(1, 0, 'desc'));
   }
+
   renderItems=(books)=>(
     books.list ? 
       books.list.map(item =>(
@@ -16,10 +16,18 @@ class home_container extends Component {
       ))
     :null
   )
+  loadmore=()=>{
+    let count =this.props.books.list.length;
+    console.log(count)
+    this.props.dispatch(getBooks(1,count,'desc',this.props.books.list))
+  }
   render() {
-    return (<div>
+     return (<div>
       {this.renderItems(this.props.books)}
-      
+      <div
+        className="loadmore"
+        onClick={this.loadmore}
+      >Load More</div>
     </div>);
   }
 }
