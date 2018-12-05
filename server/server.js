@@ -93,10 +93,10 @@ app.post('/api/book', (req, res) => {
   const book = new Book(req.body);
 
   book.save((err, doc) => {
-    if (err) return res.status(400).send(err);
+    if (err) console.log(err);
     res.status(200).json({
       post: true,
-      bookId: doc._id
+     // bookId: doc._id
     });
   });
 });

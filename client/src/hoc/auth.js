@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { auth } from '../actions/index';
 export default function(ComposedClass, reload) {
@@ -13,14 +13,13 @@ export default function(ComposedClass, reload) {
     componentWillReceiveProps(nextProps) {
     this.setState({ loading: false });
     if(!nextProps.user.login.isAuth){
-        this.props.history.push('/login')
+      if(reload)  this.props.history.push('/login')
     }else{
-     // this.props.history.push('/user')
+     if(reload===false) this.props.history.push('/user')
    
       }
     }
     render() {
-      console.log(this.props)
       if (this.state.loading) {
         return <div className="loader">Loading...</div>;
       }
