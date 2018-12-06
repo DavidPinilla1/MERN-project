@@ -1,116 +1,129 @@
 import axios from 'axios';
-export function getBooks(
-    limit = 10, skip = 0, order = 'asc', list='') {
+export function getBooks(limit = 10, skip = 0, order = 'asc', list = '') {
   const request = axios
     .get(
       `http://localhost:3001/api/books?limit=${limit}
   &skip=${skip}&order=${order}`
     )
-    .then(response => {if(list){
-        return [...list,...response.data]
-    }else{
-        return[...response.data]
-    } 
-  });
+    .then(response => {
+      if (list) {
+        return [...list, ...response.data];
+      } else {
+        return [...response.data];
+      }
+    });
   return {
     type: 'GET_BOOKS',
     payload: request
   };
 }
 
-export function getBookWithReviewer(id){
-
-  const request= axios.get(`/api/getBook?id=${id}`)
-  return (dispatch)=>{
-    request.then(({data})=>{
-        let book=data;
-        axios.get(`/api/getReviewer?id=${book.OwnerID}`)
-        .then(({data})=>{
-          let response={
-            book,
-            reviewer:data
-          }
-          console.log(response)
-          dispatch({
-            type:'GET_BOOK_W_REVIEWER',
-            payload:response
-          })
-        })
-        
-    })
-  }
+export function getBookWithReviewer(id) {
+  const request = axios.get(`/api/getBook?id=${id}`);
+  return dispatch => {
+    request.then(({ data }) => {
+      let book = data;
+      axios.get(`/api/getReviewer?id=${book.OwnerID}`).then(({ data }) => {
+        let response = {
+          book,
+          reviewer: data
+        };
+        console.log(response);
+        dispatch({
+          type: 'GET_BOOK_W_REVIEWER',
+          payload: response
+        });
+      });
+    });
+  };
 }
-export function clearBookWithReviewer(){
+export function clearBookWithReviewer() {
   return {
-    type:'CLEAR_BOOK_W_REVIEWER',
-    payload:{
-      book:{},
-      reviewer:{}
+    type: 'CLEAR_BOOK_W_REVIEWER',
+    payload: {
+      book: {},
+      reviewer: {}
     }
-  }
+  };
 }
 
-export function addBook(book){
-  console.log(book)
-  const request=axios.post('/api/book',book)
-  .then(response=>response.data);
-  return{
-    type:'ADD_BOOK',
-    payload:request
-  }
-  
+export function addBook(book) {
+  console.log(book);
+  const request = axios.post('/api/book', book).then(response => response.data);
+  return {
+    type: 'ADD_BOOK',
+    payload: request
+  };
 }
-export function getBook(id){
-  const request=axios.get(`/api/getBook?id=${id}`)
-  .then(response=>response.data)
-  return{
-    type:'GET_BOOK',
-    payload:request
-  }
-
+export function getBook(id) {
+  const request = axios
+    .get(`/api/getBook?id=${id}`)
+    .then(response => response.data);
+  return {
+    type: 'GET_BOOK',
+    payload: request
+  };
 }
-export function clearNewBook(){
-  return{
-    type:'CLEAR_NEW_BOOK',
-    payload:{}
-  }
+export function clearNewBook() {
+  return {
+    type: 'CLEAR_NEW_BOOK',
+    payload: {}
+  };
 }
 
-export function getUserPost(userId){
-  
-  const request =axios.get(`/api/user_posts?user=${userId}`)
-  .then(response=> response.data )
-  return{
-    type:'GET_USER_POSTS',
-    payload:request
-  }
+export function getUserPost(userId) {
+  const request = axios
+    .get(`/api/user_posts?user=${userId}`)
+    .then(response => response.data);
+  return {
+    type: 'GET_USER_POSTS',
+    payload: request
+  };
 }
-export function updateBook(data){
-const request=axios.post(`/api/book_update`, data)
-.then(response=>response.data)
-return{
-  type:'UPDATE_BOOK',
-  payload:request
+export function updateBook(data) {
+  const request = axios
+    .post(`/api/book_update`, data)
+    .then(response => response.data);
+  return {
+    type: 'UPDATE_BOOK',
+    payload: request
+  };
 }
 
+export function deleteBook(id) {
+  const request = axios
+    .delete(`/api/delete_book?id=${id}`)
+    .then(response => response.data);
+  return {
+    type: 'DELETE_BOOK',
+    payload: request
+  };
+}
+export function clearBook() {
+  return {
+    type: 'CLEAR_BOOK',
+    payload: { book: {},
+     updateBook: false,
+     postDeleted:false }
+  };
 }
 //-----------USER------------//
 
-export function loginUser({email,password}){
-  const request= axios.post('/api/login',{email,password})
-  .then(response=> response.data)
-  return{
-    type:'USER_LOGIN',
-    payload:request
-  }
+export function loginUser({ email, password }) {
+  const request = axios
+    .post('/api/login', { email, password })
+    .then(response => response.data);
+  return {
+    type: 'USER_LOGIN',
+    payload: request
+  };
 }
 
-export function auth(){
-  const request=axios.get('/api/auth')
-  .then(response=>response.data)
+export function auth() {
+  const request = axios.get('/api/auth').then(response => response.data);
 
   return {
-    type:'USER_AUTH',
-    payload:request
-  }
+    type: 'USER_AUTH',
+    payload: request
+  };
 }

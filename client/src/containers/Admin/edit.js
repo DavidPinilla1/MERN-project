@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   getBook,
   updateBook,
   clearBook,
-  deletePost
+  deleteBook
 } from '../../actions/index';
 class editBooks extends PureComponent {
   state = {
@@ -32,30 +33,56 @@ class editBooks extends PureComponent {
 
   submitForm = e => {
     e.preventDefault();
-    this.props.dispatch(updateBook(this.state.formdata))
+    this.props.dispatch(updateBook(this.state.formdata));
+  };
+
+  deletePost = () => {
+    this.props.dispatch(deleteBook(this.props.match.params.id));
+  };
+  redirectUser = () => {
+    setTimeout(() => {
+      this.props.history.push('/user/user-reviews');
+    }, 1000);
   };
   componentWillMount() {
     this.props.dispatch(getBook(this.props.match.params.id));
   }
   componentWillReceiveProps(nextProps) {
     let book = nextProps.books.book;
- 
+    console.log(nextProps);
     this.setState({
       formdata: {
-        _id:book._id,
+        _id: book._id,
         name: book.name,
-      author: book.author,
-      review: book.review,
-      pages: book.pages,
-      rating: book.rating,
-      price: book.price
+        author: book.author,
+        review: book.review,
+        pages: book.pages,
+        rating: book.rating,
+        price: book.price
       }
     });
   }
+  componentWillUnmount() {
+    this.props.dispatch(clearBook());
+  }
   render() {
-    console.log(this.props)
+    let books = this.props.books;
     return (
       <div className="rl_container article">
+        {books.updateBook ? (
+          <div className="edit_confirm">
+            post updates,{' '}
+            <Link to={`/books/${books.book._id}`}>
+              click here to see the book
+            </Link>
+          </div>
+        ) : null}
+        {books.postDeleted ? (
+          <div className="red_tag">
+            Review Deleted
+            {this.redirectUser()}
+          </div>
+        ) : null}
         <form onSubmit={this.submitForm}>
           <h2>Edit review</h2>
           <div className="form_element">
@@ -110,7 +137,9 @@ class editBooks extends PureComponent {
           </div>
           <button type="submit">Edit Review</button>
           <div className="delete_post">
-            <div className="button">Delete review</div>
+            <div className="button" onClick={this.deletePost}>
+              Delete review
+            </div>
           </div>
         </form>
       </div>
