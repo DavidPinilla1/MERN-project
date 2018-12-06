@@ -60,7 +60,15 @@ export function addBook(book){
   }
   
 }
+export function getBook(id){
+  const request=axios.get(`/api/getBook?id=${id}`)
+  .then(response=>response.data)
+  return{
+    type:'GET_BOOK',
+    payload:request
+  }
 
+}
 export function clearNewBook(){
   return{
     type:'CLEAR_NEW_BOOK',
@@ -77,7 +85,15 @@ export function getUserPost(userId){
     payload:request
   }
 }
+export function updateBook(data){
+const request=axios.post(`/api/book_update`, data)
+.then(response=>response.data)
+return{
+  type:'UPDATE_BOOK',
+  payload:request
+}
 
+}
 //-----------USER------------//
 
 export function loginUser({email,password}){
