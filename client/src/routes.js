@@ -23,7 +23,7 @@ const Routes = () => {
         <Route path="/user/logout" exact component={Auth(Logout, true)} />
         <Route path="/user" exact component={Auth(User, true)} />
         <Route path="/user/add" exact component={Auth(AddReview, true)} />
-        <Route path="/user/register" exact component={Auth(register, true)} />
+        <Route path="/user/register" exact component={Auth(register, null)} />
         <Route path="/user/edit-posts/:id" exact component={Auth(EditReview, true)} />
         <Route path="/books/:id" exact component={Auth(BookView)} />
         <Route path="/user/user-reviews" exact component={Auth(UserPosts, true)} />
