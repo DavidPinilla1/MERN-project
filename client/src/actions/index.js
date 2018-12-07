@@ -2,7 +2,7 @@ import axios from 'axios';
 export function getBooks(limit = 10, skip = 0, order = 'asc', list = '') {
   const request = axios
     .get(
-      `http://localhost:3001/api/books?limit=${limit}
+      `/api/books?limit=${limit}
   &skip=${skip}&order=${order}`
     )
     .then(response => {
