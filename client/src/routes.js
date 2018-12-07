@@ -12,12 +12,15 @@ import AddReview from './containers/Admin/add';
 import UserPosts from './components/Admin/userPosts';
 import EditReview from './containers/Admin/edit';
 import register from './containers/Admin/register';
+import Logout from './components/Admin/logout'
+
 const Routes = () => {
   return (
     <Layout>
       <Switch>
-        <Route path="/" exact component={Auth(Home, true)} />
+        <Route path="/" exact component={Auth(Home, null)} />
         <Route path="/login" exact component={Auth(Login, false)} />
+        <Route path="/user/logout" exact component={Auth(Logout, true)} />
         <Route path="/user" exact component={Auth(User, true)} />
         <Route path="/user/add" exact component={Auth(AddReview, true)} />
         <Route path="/user/register" exact component={Auth(register, true)} />
