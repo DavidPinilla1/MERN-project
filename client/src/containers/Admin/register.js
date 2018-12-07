@@ -86,7 +86,7 @@ class register extends PureComponent {
           </div>
           <div className="form_element">
             <input
-              type="text"
+              type="email"
               placeholder="Enter email"
               value={this.state.email}
               onChange={this.handlenInputEmail}
