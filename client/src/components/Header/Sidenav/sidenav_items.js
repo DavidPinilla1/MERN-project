@@ -22,7 +22,7 @@ const SidenavItems = props => {
       type: 'navItem',
       icon: 'file-text-o',
       text: 'Add Admins',
-      link: '/user/registrer',
+      link: '/user/register',
       restricted: false
     },
     {

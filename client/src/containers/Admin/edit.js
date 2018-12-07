@@ -49,7 +49,6 @@ class editBooks extends PureComponent {
   }
   componentWillReceiveProps(nextProps) {
     let book = nextProps.books.book;
-    console.log(nextProps);
     this.setState({
       formdata: {
         _id: book._id,

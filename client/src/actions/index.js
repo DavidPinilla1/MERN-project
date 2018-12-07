@@ -28,7 +28,6 @@ export function getBookWithReviewer(id) {
           book,
           reviewer: data
         };
-        console.log(response);
         dispatch({
           type: 'GET_BOOK_W_REVIEWER',
           payload: response
@@ -102,9 +101,7 @@ export function deleteBook(id) {
 export function clearBook() {
   return {
     type: 'CLEAR_BOOK',
-    payload: { book: {},
-     updateBook: false,
-     postDeleted:false }
+    payload: { book: null, updateBook: false, postDeleted: false }
   };
 }
 //-----------USER------------//
@@ -126,4 +123,28 @@ export function auth() {
     type: 'USER_AUTH',
     payload: request
   };
+}
+export function getUsers(){
+  const request=axios.get(`/api/users`)
+  .then(response=>response.data);
+  return{
+    type:'GET_USER',
+    payload:request
+  }
+}
+export function RegisterUser(user,userList){
+  const request=axios.post(`/api/register`,user)
+  
+  return(dispatch)=>
+  request.then(({data})=>{
+    let users=data.success?[...userList,data.user]:userList
+    let response={
+      success:data.success,
+      users
+    }
+    dispatch({
+      type:'USER_REGISTER',
+      payload:response
+    })
+  })
 }
