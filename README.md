@@ -5,10 +5,10 @@ This project displays several books reviewed by users, the application alows you
 
 ## Getting Started
 
-Throught this [Link](https://books-davidpinilla.herokuapp.com/user/register) you can register and admin, access the project and test it by yourself. You can also navigate throught this repository and read the code. Feel free to ask about anything you do not understand.
+Throught this [Link](https://books-davidpinilla.herokuapp.com/user/register) you can register a admin (the password requires at least 8 characters), access the project and test it by yourself. You can also navigate throught this repository and read the code. Feel free to ask about anything you do not understand.
 
 ## Built With
-
+![GitHub Logo](https://i.imgur.com/ET7GHM4.png)
 * ReactJS (front-end)
 * NodeJS (back-end)
 * Express (NodeJS Framework)
